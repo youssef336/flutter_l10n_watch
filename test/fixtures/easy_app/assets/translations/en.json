@@ -1,0 +1,23 @@
+{
+  "app_title": "My Shop",
+  "greeting": "Hello {name}!",
+  "items_count": "You have {} items in {}",
+  "cart": {
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "checkout": "Proceed to checkout"
+  },
+  "apples": {
+    "one": "{} apple",
+    "other": "{} apples"
+  },
+  "status_active": "Active",
+  "status_paused": "Paused",
+  "unused_thing": "Never used anywhere",
+  "help_text": "Contact support",
+  "about": "See @:help_text.",
+  "ok": "OK",
+  "brand_line": "Shop Pro",
+  "long_label": "Save",
+  "icu_label": "{count, plural, one{item} other{items}}"
+}

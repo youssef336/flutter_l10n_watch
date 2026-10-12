@@ -1,0 +1,23 @@
+{
+  "app_title": "متجري",
+  "greeting": "مرحبا {user}!",
+  "items_count": "لديك {} عناصر",
+  "cart": {
+    "title": "سلتك",
+    "empty": "سلتك فارغة"
+  },
+  "apples": {
+    "one": "تفاحة واحدة",
+    "other": "{} تفاحة"
+  },
+  "status_active": "",
+  "status_paused": "متوقف",
+  "unused_thing": "Never used anywhere",
+  "help_text": "تواصل مع الدعم",
+  "about": "راجع @:help_text.",
+  "ok": "OK",
+  "brand_line": "Shop Pro",
+  "long_label": "احفظ كل التغييرات الآن",
+  "icu_label": "{count, plural, one{عنصر} other{عناصر}}",
+  "old_key": "قديم"
+}

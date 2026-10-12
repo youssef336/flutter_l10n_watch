@@ -1,0 +1,23 @@
+{
+  "app_title": "Ma boutique",
+  "greeting": "Bonjour {name} !",
+  "items_count": "Vous avez {} articles dans {}",
+  "cart": {
+    "title": "Votre panier",
+    "empty": "TODO: Your cart is empty",
+    "checkout": "Passer à la caisse"
+  },
+  "apples": {
+    "one": "{} pomme",
+    "other": "{} pommes"
+  },
+  "status_active": "Actif",
+  "status_paused": "En pause",
+  "unused_thing": "Jamais utilisé",
+  "help_text": "Contacter le support",
+  "about": "Voir @:help_text.",
+  "ok": "OK",
+  "brand_line": "Shop Pro",
+  "long_label": "Enregistrer",
+  "icu_label": "{count, plural, one{article} other{articles}}"
+}

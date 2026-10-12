@@ -1,0 +1,11 @@
+{
+  "@@locale": "de",
+  "appTitle": "Galerie",
+  "hello": "Hallo {name}",
+  "itemCount": "{count, plural, one{Ein Artikel} other{{count} Artikel}}",
+  "genderMsg": "{gender, select, male{Er} female{Sie} other{Sie}} hat geantwortet",
+  "unusedMessage": "Nirgends verwendet",
+  "declaredUnused": "Klartext",
+  "undeclared": "Hallo {who}",
+  "saveButton": "Speichern"
+}

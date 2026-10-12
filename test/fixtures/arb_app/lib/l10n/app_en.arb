@@ -1,0 +1,41 @@
+{
+  "@@locale": "en",
+  "appTitle": "Gallery",
+  "@appTitle": {
+    "description": "Title of the app"
+  },
+  "hello": "Hello {name}",
+  "@hello": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "itemCount": "{count, plural, =0{No items} =1{One item} other{{count} items}}",
+  "@itemCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "genderMsg": "{gender, select, male{He} female{She} other{They}} replied",
+  "@genderMsg": {
+    "placeholders": {
+      "gender": {}
+    }
+  },
+  "unusedMessage": "Not used anywhere",
+  "declaredUnused": "Plain text",
+  "@declaredUnused": {
+    "placeholders": {
+      "x": {}
+    }
+  },
+  "undeclared": "Hi {who}",
+  "@ghost": {
+    "description": "Metadata without a message"
+  },
+  "saveButton": "Save"
+}

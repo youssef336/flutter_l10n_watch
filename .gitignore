@@ -1,0 +1,10 @@
+.dart_tool/
+.packages
+build/
+pubspec_overrides.yaml
+coverage/
+*.iml
+.idea/
+.vscode/
+.DS_Store
+pubspec.lock

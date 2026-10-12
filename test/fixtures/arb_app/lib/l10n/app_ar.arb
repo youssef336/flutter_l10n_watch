@@ -1,0 +1,10 @@
+{
+  "@@locale": "ar",
+  "appTitle": "Gallery",
+  "hello": "مرحبا {nam}",
+  "itemCount": "{count, plural, =0{لا عناصر} =1{عنصر واحد} other{{count} عنصر}}",
+  "genderMsg": "{gender, select, male{هو} female{هي} other{هم}",
+  "unusedMessage": "غير مستخدم",
+  "declaredUnused": "نص",
+  "undeclared": "أهلا {who}"
+}
