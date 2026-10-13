@@ -1,3 +1,5 @@
+[العربية](README.ar.md)
+
 <h1 align="center">Flutter L10n Watch</h1>
 
 <p align="center">
@@ -5,6 +7,7 @@
 </p>
 
 <p align="center">
+  <a href="https://pub.dev/packages/flutter_l10n_watch"><img src="https://img.shields.io/pub/v/flutter_l10n_watch?style=for-the-badge&logo=dart&label=pub.dev" alt="pub.dev"/></a>
   <img src="https://img.shields.io/badge/Dart-CLI-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart CLI">
   <img src="https://img.shields.io/badge/Flutter-l10n-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter">
   <img src="https://img.shields.io/badge/easy__localization-JSON-6E4C9E?style=for-the-badge" alt="easy_localization">
@@ -26,91 +29,91 @@
 > `report` prints text, Markdown, JSON or GitHub annotations. Everything is configurable in
 > `l10n_watch.yaml`. Pure Dart, no Flutter SDK needed to run it, no network.
 
-<div dir="rtl">
+A command-line tool that checks all the translations of a Flutter project in one command: what is
+missing, what was never translated, which placeholder got broken, which Arabic plural forms are
+missing, which text is hardcoded in the code, and what will break the screen when the language
+is right-to-left.
 
-أداة سطر أوامر بتفحص ترجمات مشروع Flutter كله في أمر واحد: إيه الناقص، وإيه اللي اتنسى
-يتترجم، وإيه الـ placeholder اللي اتكسر، وجمع العربي ناقصه إيه، وإيه الكلام المكتوب
-hardcoded في الكود، وإيه اللي هيبوّظ الشاشة لما اللغة تبقى من اليمين للشمال.
+## ✨ What it checks
 
-## ✨ بتفحص إيه
-
-| الفحص | الـ id | الافتراضي |
+| Check | id | Default |
 |---|---|---|
-| 🔑 مفاتيح ناقصة في لغة عن اللغة الأساسية | `missing_translation` | error |
-| ➕ مفاتيح موجودة في لغة ومش موجودة في الأساسية | `extra_translation` | warning |
-| ⬜ قيم فاضية | `empty_value` | warning |
-| 🪞 قيمة زي الإنجليزي بالظبط (غالبًا اتنست) أو عليها `TODO:` | `untranslated` | warning |
-| 🧩 الـ placeholders مختلفة: `{}` و `{name}` و ICU | `placeholder_mismatch` | error |
-| 🔢 صيغ الجمع ناقصة للغة (العربي محتاج zero/one/two/few/many/other) | `plural_forms` | warning |
-| 💥 رسالة ICU مكسورة، أو plural من غير `other`، أو ICU جوه JSON بتاع easy_localization | `invalid_message` | error |
-| 🏷 الـ `@key.placeholders` في الـ ARB مش ماشية مع الرسالة | `arb_metadata` | warning |
-| ❓ مفتاح مستخدم في الكود ومش متعرّف | `undefined_key` | error |
-| 🗑 مفتاح متعرّف ومحدش بيستخدمه | `unused_key` | warning |
-| 🌀 مفتاح بيتبني وقت التشغيل (`'status_$x'.tr()`) | `dynamic_key` | info |
-| 📏 ترجمة أطول بكتير من الأصل (خطر overflow) | `length_risk` | info |
-| ✍️ كلام مكتوب في الكود مش من الترجمة | `hardcoded_string` | warning |
-| ↔️ حاجات بتبوظ في RTL | `rtl_smell` | info |
+| 🔑 Keys missing from a locale compared with the base locale | `missing_translation` | error |
+| ➕ Keys present in a locale but not in the base locale | `extra_translation` | warning |
+| ⬜ Empty values | `empty_value` | warning |
+| 🪞 Value identical to the English one (probably forgotten) or marked `TODO:` | `untranslated` | warning |
+| 🧩 Placeholders differ: `{}`, `{name}` and ICU | `placeholder_mismatch` | error |
+| 🔢 Plural forms missing for the language (Arabic needs zero/one/two/few/many/other) | `plural_forms` | warning |
+| 💥 Broken ICU message, a plural without `other`, or ICU inside easy_localization JSON | `invalid_message` | error |
+| 🏷 `@key.placeholders` in the ARB does not match the message | `arb_metadata` | warning |
+| ❓ Key used in the code but not defined | `undefined_key` | error |
+| 🗑 Key defined but never used | `unused_key` | warning |
+| 🌀 Key built at runtime (`'status_$x'.tr()`) | `dynamic_key` | info |
+| 📏 Translation much longer than the source (overflow risk) | `length_risk` | info |
+| ✍️ Text written in the code instead of coming from the translations | `hardcoded_string` | warning |
+| ↔️ Things that break in RTL | `rtl_smell` | info |
 
-## 🧠 بيفهم المشروع لوحده
+## 🧠 It understands the project on its own
 
-- **easy_localization**: بيلاقي فولدر الترجمة من `EasyLocalization(path: ...)` في الكود، أو من
-  `assets` في `pubspec.yaml`، أو من الأماكن المشهورة (`assets/translations`، `assets/lang`، …).
-  بيفهم المفاتيح المتداخلة (`cart.title`)، والـ plural objects (`one`/`other`)، والـ links (`@:key`)،
-  واللغة الأساسية من `fallbackLocale`. بيعدّ الاستخدام من `'key'.tr()` و `tr('key')` و
-  `context.tr('key')` و `'key'.plural(n)` و `Text('key').tr()` و `(cond ? 'a' : 'b').tr()`،
-  ومن `LocaleKeys.foo_bar`: بيقرا كلاس `LocaleKeys` المتولّد لو موجود، ولو مش موجود بيحوّل
-  `foo.bar` و `foo_bar` لنفس الاسم زي ما الـ generator بيعمل.
-- **gen_l10n (ARB)**: بيقرا `l10n.yaml` (`arb-dir` و `template-arb-file` و `output-class` و
-  `use-escaping`)، وبيفهم ICU كامل: placeholders و plural و select و nested. الاستخدام من
-  `AppLocalizations.of(context)!.key` و `context.l10n.key` و `S.of(context).key` و `S.current.key`،
-  ومن أي متغير اتعمل منهم (`final t = AppLocalizations.of(context)!;` أو field نوعه `AppLocalizations`).
-  **intl_utils** (`flutter_intl` في pubspec، كلاس `S`) شغال برضه.
-- **JSON عادي** لأي مكتبة تانية: `format: json`، والـ placeholders بالـ regex اللي تختاره.
-- الفايلات المتولّدة (`*.g.dart`، `generated/`، أي فايل أوله «GENERATED / DO NOT EDIT»، وكلاس
-  الـ localizations المتولّد) مش بتتعد في الاستخدام ولا في الـ hardcoded.
+- **easy_localization**: finds the translations folder from `EasyLocalization(path: ...)` in the
+  code, from `assets` in `pubspec.yaml`, or from the well-known locations (`assets/translations`,
+  `assets/lang`, …). It understands nested keys (`cart.title`), plural objects (`one`/`other`),
+  links (`@:key`), and the base locale from `fallbackLocale`. It counts usage from `'key'.tr()`,
+  `tr('key')`, `context.tr('key')`, `'key'.plural(n)`, `Text('key').tr()` and
+  `(cond ? 'a' : 'b').tr()`, and from `LocaleKeys.foo_bar`: it reads the generated `LocaleKeys`
+  class if it exists, and if it does not, it maps `foo.bar` and `foo_bar` to the same name the
+  way the generator does.
+- **gen_l10n (ARB)**: reads `l10n.yaml` (`arb-dir`, `template-arb-file`, `output-class` and
+  `use-escaping`), and understands full ICU: placeholders, plural, select and nesting. Usage is
+  counted from `AppLocalizations.of(context)!.key`, `context.l10n.key`, `S.of(context).key` and
+  `S.current.key`, and from any variable created from them
+  (`final t = AppLocalizations.of(context)!;` or a field of type `AppLocalizations`).
+  **intl_utils** (`flutter_intl` in pubspec, class `S`) works too.
+- **Plain JSON** for any other library: `format: json`, with placeholders matched by the regex
+  you choose.
+- Generated files (`*.g.dart`, `generated/`, any file starting with "GENERATED / DO NOT EDIT",
+  and the generated localizations class) are not counted for usage or for hardcoded strings.
 
-## 🚀 التثبيت
+## 🚀 Installation
 
 ```bash
-dart pub global activate --source git https://github.com/youssef336/flutter_l10n_watch.git
+dart pub global activate flutter_l10n_watch
 cd my_flutter_app
 l10n_watch check
 ```
 
-أو جوه المشروع كـ dev dependency:
+Or inside the project as a dev dependency:
 
 ```yaml
 dev_dependencies:
-  flutter_l10n_watch:
-    git: https://github.com/youssef336/flutter_l10n_watch.git
+  flutter_l10n_watch: ^0.1.0
 ```
 
 ```bash
 dart run flutter_l10n_watch:l10n_watch check
 ```
 
-## 🕹 الأوامر
+## 🕹 Commands
 
 ```bash
-l10n_watch check                        # كل الفحوصات، exit 1 لو فيه error
-l10n_watch check --fail-on warning      # خلّي الـ warnings كمان توقّف الـ CI
+l10n_watch check                        # all checks, exit 1 if there is an error
+l10n_watch check --fail-on warning      # make warnings fail the CI too
 l10n_watch check --checks missing_translation,placeholder_mismatch
-l10n_watch report --format markdown -o l10n.md   # لـ PR comment أو job summary
-l10n_watch report --format json                  # لأي أداة تانية
-l10n_watch report --format github                # annotations على سطور الـ PR
-l10n_watch report --all                          # من غير ما يقص القوايم الطويلة
-l10n_watch fix --sort --dry-run                  # يوريك هيغيّر إيه من غير ما يكتب
-l10n_watch fix --sort                            # يرتّب المفاتيح في كل الفايلات
-l10n_watch fix --add-missing                     # يضيف الناقص بقيمة الأساسية + "TODO: "
-l10n_watch init                                  # يكتب l10n_watch.yaml فيه كل الإعدادات
+l10n_watch report --format markdown -o l10n.md   # for a PR comment or job summary
+l10n_watch report --format json                  # for any other tool
+l10n_watch report --format github                # annotations on the PR lines
+l10n_watch report --all                          # without truncating long lists
+l10n_watch fix --sort --dry-run                  # shows what it would change without writing
+l10n_watch fix --sort                            # sorts the keys in every file
+l10n_watch fix --add-missing                     # adds missing keys with the base value + "TODO: "
+l10n_watch init                                  # writes an l10n_watch.yaml with every setting
 ```
 
-`fix` **مش بيعمل أي حاجة من غير flag**، ومش بيلمس فايل مش عارف يقراه. القيم اللي بيضيفها
-عليها `TODO: ` عشان فحص `untranslated` يفضل يمسكها لحد ما حد يترجمها.
+`fix` **does nothing without a flag**, and never touches a file it cannot read. The values it
+adds are prefixed with `TODO: ` so the `untranslated` check keeps catching them until someone
+translates them.
 
-## 🖥 شكل التقرير
-
-</div>
+## 🖥 What the report looks like
 
 ```text
 l10n_watch 0.1.0 · easy_localization · assets/translations · base en · 3 locales · 16 keys · 2 Dart files
@@ -146,29 +149,25 @@ l10n_watch 0.1.0 · easy_localization · assets/translations · base en · 3 loc
 ✖ 8 errors · 14 warnings · 10 info
 ```
 
-<div dir="rtl">
+## ⚙️ Configuration (`l10n_watch.yaml`)
 
-## ⚙️ الإعدادات (`l10n_watch.yaml`)
-
-كله اختياري. من غير الفايل الأداة شغالة بالافتراضي.
-
-</div>
+Everything is optional. Without the file the tool runs with the defaults.
 
 ```yaml
 format: auto                  # auto | easy_localization | arb | json
 translations_dir: assets/translations
 base_locale: en
 source_dirs: [lib]
-exclude: ['lib/legacy/**']    # فوق الافتراضي (*.g.dart, generated/, ...)
-ignore_keys: ['^debug_']      # regex، كل الفحوصات بتتجاهلها
+exclude: ['lib/legacy/**']    # on top of the defaults (*.g.dart, generated/, ...)
+ignore_keys: ['^debug_']      # regex, ignored by every check
 locale_keys_class: LocaleKeys
 tr_functions: [tr, plural, trExists]
-arb_accessors: ['context.loc']        # لو عندك اختصار تاني غير context.l10n
-placeholder_pattern: '\{\{\s*(\w*)\s*\}\}'   # لـ format: json بس
+arb_accessors: ['context.loc']        # if you have a shortcut other than context.l10n
+placeholder_pattern: '\{\{\s*(\w*)\s*\}\}'   # for format: json only
 
 untranslated:
-  min_letters: 3              # أقل من كده (OK، ID، 1st) مش بيتحسب
-  allow: [Visa, PayPal, WhatsApp]     # كلمات زي ما هي في كل اللغات
+  min_letters: 3              # shorter than this (OK, ID, 1st) is not counted
+  allow: [Visa, PayPal, WhatsApp]     # words that stay the same in every language
   ignore_keys: ['^country_']
   todo_marker: 'TODO: '
 
@@ -181,82 +180,80 @@ hardcoded:
   named_args: [hintText, labelText, helperText, errorText, tooltip, TextSpan.text, Tooltip.message]
   ignore: ['^Lorem']
 
-plural_rules:                 # فوق جدول CLDR الافتراضي
+plural_rules:                 # on top of the default CLDR table
   fr: [one, many, other]
 
 severity:                     # error | warning | info | off
   unused_key: error
   rtl_smell: off
 
-fail_on: error                # check بيرجع 1 من المستوى ده وأعلى
+fail_on: error                # check returns 1 from this level and above
 ```
 
-<div dir="rtl">
+A line containing `// l10n-ignore` is not reported by `hardcoded_string` or `rtl_smell`.
 
-سطر فيه `// l10n-ignore` مش بيطلع في `hardcoded_string` ولا `rtl_smell`.
-
-## 🤖 في الـ CI
-
-</div>
+## 🤖 In CI
 
 ```yaml
-- run: dart pub global activate --source git https://github.com/youssef336/flutter_l10n_watch.git
-- run: l10n_watch report --format github      # annotations على الـ PR
+- run: dart pub global activate flutter_l10n_watch
+- run: l10n_watch report --format github      # annotations on the PR
 - run: l10n_watch report --format markdown >> "$GITHUB_STEP_SUMMARY"
-- run: l10n_watch check                       # يوقّف الـ job لو فيه error
+- run: l10n_watch check                       # fails the job if there is an error
 ```
 
-<div dir="rtl">
-
-| exit code | يعني |
+| exit code | Meaning |
 |---|---|
-| `0` | مفيش حاجة وصلت لـ `fail_on` |
-| `1` | فيه findings وصلت لـ `fail_on` (في `check` بس) |
-| `2` | إعدادات غلط، أو مش لاقي فايلات الترجمة |
+| `0` | Nothing reached `fail_on` |
+| `1` | There are findings that reached `fail_on` (`check` only) |
+| `2` | Invalid configuration, or the translation files could not be found |
 
-## ❓ أسئلة
+## ❓ FAQ
 
-**ليه مفتاح بيطلع unused وأنا متأكد إنه مستخدم؟**
-غالبًا المفتاح بيتبني وقت التشغيل من متغير (`tr(item.titleKey)`). الحالات دي بتطلع في
-`dynamic_key` بمكانها في الكود، فلو شايف هناك سطر بيعمل كده، ضيف المفاتيح في `ignore_keys`.
-لو المفتاح متكتب كـ string في أي حتة في الكود (حتى في map أو const list) بيتحسب مستخدم.
+**Why is a key reported as unused when I am sure it is used?**
+Most likely the key is built at runtime from a variable (`tr(item.titleKey)`). Those cases show
+up in `dynamic_key` with their location in the code, so if you see a line there doing that, add
+the keys to `ignore_keys`. If the key is written as a string anywhere in the code (even in a map
+or a const list) it counts as used.
 
-**`'status_$x'.tr()` بيتعامل معاه إزاي؟**
-الجزء الثابت (`status_`) بيبقى prefix، وكل المفاتيح اللي بتبدأ بيه بتطلع «ممكن تكون مستخدمة»
-في `dynamic_key` بدل `unused_key`.
+**How is `'status_$x'.tr()` handled?**
+The constant part (`status_`) becomes a prefix, and every key starting with it is reported as
+"possibly used" in `dynamic_key` instead of `unused_key`.
 
-**الإنجليزي محتاج `one` و `other` بس، ليه العربي بيطلع warning؟**
-العربي فيه ست صيغ جمع في CLDR. لو ناقص `two` مثلًا، «٢ رسالة» هتطلع بصيغة `other`
-وده غلط لغويًا. `=0` و `=1` و `=2` في ICU بيتحسبوا zero و one و two.
+**English only needs `one` and `other`, so why does Arabic get a warning?**
+Arabic has six plural forms in CLDR. If `two` is missing, for example, "٢ رسالة" ("2 messages")
+will be shown with the `other` form, which is grammatically wrong. `=0`, `=1` and `=2` in ICU
+count as zero, one and two.
 
-**كلمة زي «Email» أو اسم البراند بتطلع untranslated.**
-ضيفها في `untranslated.allow`. الكلمات اللي أقل من 3 حروف، والأرقام، واللينكات، والإيميلات
-مش بتتحسب من الأول. ولو اللغة لهجة من نفس اللغة الأساسية (`en_GB` مع `en`) مش بتتفحص.
+**A word like "Email" or the brand name is reported as untranslated.**
+Add it to `untranslated.allow`. Words shorter than 3 letters, numbers, links and emails are not
+counted in the first place. And if the locale is a regional variant of the base language
+(`en_GB` with `en`), it is not checked.
 
-**JSON فيه `{count, plural, ...}` مع easy_localization؟**
-easy_localization مش بيفهم ICU، فالجملة بتظهر للمستخدم زي ما هي. علشان كده بتطلع `invalid_message`،
-والحل plural object (`{"one": "...", "other": "..."}`) مع `.plural()`.
+**JSON with `{count, plural, ...}` in easy_localization?**
+easy_localization does not understand ICU, so the sentence is shown to the user as is. That is
+why it is reported as `invalid_message`; the fix is a plural object
+(`{"one": "...", "other": "..."}`) with `.plural()`.
 
-**`fix` ممكن يبوّظ الفايلات؟**
-بيكتب JSON صحيح بنفس الـ indentation، وبيحافظ على السطر الفاضي في الآخر، ومش بيعمل حاجة
-لو فيه فايل مش بيتقري. اللي بيتغيّر: الـ escapes زي `é` بتتكتب كحرف عادي. جرّب
-`--dry-run` الأول.
+**Can `fix` break the files?**
+It writes valid JSON with the same indentation, keeps the trailing newline, and does nothing if
+any file cannot be read. What changes: escapes like `é` are written as the plain character.
+Try `--dry-run` first.
 
-## ⚖️ الحدود
+## ⚖️ Limitations
 
-- مش parser كامل لـ Dart: بيقرا الكود بـ lexer بيفهم الـ strings والـ comments والـ interpolation،
-  والباقي regex. أنماط غريبة جدًا للاستخدام ممكن تفوته (وساعتها المفتاح يطلع unused).
-- أي string في الكود بيساوي اسم مفتاح بيخلّي المفتاح «مستخدم»، فالـ unused ممكن يقل عن الحقيقة
-  (أأمن من إنه يقولك امسح حاجة مستخدمة).
-- في ARB، أي `.name` بعد نقطة بيساوي اسم مفتاح بيتحسب استخدام. مفتاح اسمه `title` مثلًا
-  غالبًا هيبان مستخدم.
-- easy_localization: فايل JSON واحد لكل لغة بس (مش فولدر لكل لغة، ولا CSV/YAML).
-- `hardcoded_string` بيدور في أول argument لـ `Text` والأنواع اللي تحددها، وفي الـ named args
-  المعروفة بس. string متخزّن في متغير وبعدين اتعرض مش هيتمسك.
-- `length_risk` بيقارن عدد الحروف مش العرض الحقيقي على الشاشة.
-- جدول الجمع جوه الأداة مختصر من CLDR للأعداد الصحيحة، وتقدر تعدّله من `plural_rules`.
-
-</div>
+- It is not a full Dart parser: it reads the code with a lexer that understands strings, comments
+  and interpolation, and the rest is regex. Very unusual usage patterns may slip past it (and the
+  key is then reported as unused).
+- Any string in the code that equals a key name makes that key "used", so the unused count may be
+  lower than the real one (safer than telling you to delete something that is used).
+- In ARB, any `.name` after a dot that equals a key name counts as a usage. A key named `title`,
+  for example, will most likely look used.
+- easy_localization: one JSON file per locale only (not a folder per locale, nor CSV/YAML).
+- `hardcoded_string` looks at the first argument of `Text` and the types you configure, and at the
+  known named args only. A string stored in a variable and displayed later is not caught.
+- `length_risk` compares character counts, not the real width on screen.
+- The plural table inside the tool is a condensed CLDR table for integers, and you can adjust it
+  with `plural_rules`.
 
 ## 🛠 Development
 

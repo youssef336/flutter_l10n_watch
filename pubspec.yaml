@@ -1,9 +1,8 @@
 name: flutter_l10n_watch
 description: >-
-  Translation health checker for Flutter projects. Finds missing, empty,
-  untranslated, unused and undefined keys, placeholder and plural mistakes,
-  overflow risks, hardcoded strings and RTL smells for easy_localization
-  JSON and gen_l10n ARB setups.
+  Translation health checker for Flutter: missing, unused and undefined keys,
+  placeholder and plural mistakes, hardcoded strings and RTL smells
+  (easy_localization, ARB).
 version: 0.1.0
 repository: https://github.com/youssef336/flutter_l10n_watch
 issue_tracker: https://github.com/youssef336/flutter_l10n_watch/issues
