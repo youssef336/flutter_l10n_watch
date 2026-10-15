@@ -1,5 +1,7 @@
 [العربية](README.ar.md)
 
+<p align="center"><img src="https://raw.githubusercontent.com/youssef336/flutter_l10n_watch/main/screenshots/banner.png" alt="flutter_l10n_watch banner" width="100%"></p>
+
 <h1 align="center">Flutter L10n Watch</h1>
 
 <p align="center">
